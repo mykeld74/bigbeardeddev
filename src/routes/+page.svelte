@@ -2,7 +2,7 @@
 	import { resolve } from '$app/paths';
 	import Seo from '#lib/components/Seo.svelte';
 	import ProjectCard from '#lib/components/ProjectCard.svelte';
-	import logoColor from '#lib/assets/logo-color.svg';
+	import LogoColor from '#lib/components/LogoColor.svelte';
 	import { featuredProjects } from '#lib/data/projects';
 	import { services, skillGroups } from '#lib/data/services';
 	import { site, yearsExperience } from '#lib/data/site';
@@ -45,8 +45,8 @@
 			</dl>
 		</div>
 
-		<div class="heroArt drift" aria-hidden="true">
-			<img src={logoColor} alt="" width="404" height="710" fetchpriority="high" />
+		<div class="heroArt drift">
+			<LogoColor />
 		</div>
 	</div>
 </section>
@@ -235,11 +235,6 @@
 		justify-self: center;
 		max-width: 20rem;
 		filter: drop-shadow(0 24px 48px rgb(0 0 0 / 0.55));
-	}
-
-	.heroArt img {
-		width: 100%;
-		height: auto;
 	}
 
 	@media (min-width: 56rem) {

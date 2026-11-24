@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import Seo from '#lib/components/Seo.svelte';
-	import logoColor from '#lib/assets/logo-color.svg';
+	import LogoColor from '#lib/components/LogoColor.svelte';
 	import { skillGroups } from '#lib/data/services';
 	import { site, yearsExperience } from '#lib/data/site';
 </script>
@@ -21,8 +21,8 @@
 				which turns out to be better preparation for this job than it sounds.
 			</p>
 		</div>
-		<div class="portrait" aria-hidden="true">
-			<img src={logoColor} alt="" width="404" height="710" />
+		<div class="portrait">
+			<LogoColor />
 		</div>
 	</div>
 </section>
@@ -154,11 +154,6 @@
 		justify-self: center;
 		max-width: 13rem;
 		filter: drop-shadow(0 20px 40px rgb(0 0 0 / 0.5));
-	}
-
-	.portrait img {
-		width: 100%;
-		height: auto;
 	}
 
 	@media (min-width: 50rem) {
