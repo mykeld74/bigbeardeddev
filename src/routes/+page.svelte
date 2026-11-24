@@ -3,7 +3,7 @@
 	import Seo from '#lib/components/Seo.svelte';
 	import ProjectCard from '#lib/components/ProjectCard.svelte';
 	import logoColor from '#lib/assets/logo-color.svg';
-	import { featuredProjects, projects } from '#lib/data/projects';
+	import { featuredProjects } from '#lib/data/projects';
 	import { services, skillGroups } from '#lib/data/services';
 	import { site, yearsExperience } from '#lib/data/site';
 </script>
@@ -17,7 +17,7 @@
 			<p class="eyebrow">{site.role} · {site.location}</p>
 			<h1>
 				I build websites<br />
-				<span class="accent">by hand.</span>
+				<span class="accent">from scratch.</span>
 			</h1>
 			<p class="lead">
 				I'm Mike — the big bearded dev. For {yearsExperience} years I've been building fast, accessible
@@ -35,8 +35,8 @@
 					<dd>{yearsExperience}</dd>
 				</div>
 				<div>
-					<dt>Live client sites</dt>
-					<dd>{projects.length}+</dd>
+					<dt>Longest client</dt>
+					<dd class="dense">{site.longestClient}</dd>
 				</div>
 				<div>
 					<dt>Primary stack</dt>
@@ -102,7 +102,7 @@
 		</ul>
 
 		<p class="sectionFoot">
-			<a class="btn btnGhost" href={resolve('/work')}>All {projects.length} projects</a>
+			<a class="btn btnGhost" href={resolve('/work')}>See more work</a>
 		</p>
 	</div>
 </section>
@@ -346,6 +346,10 @@
 		gap: clamp(1.25rem, 0.5rem + 2vw, 2rem);
 		margin: 0;
 		padding: 0;
+	}
+
+	.workGrid > li {
+		display: flex;
 	}
 
 	@media (min-width: 46rem) {

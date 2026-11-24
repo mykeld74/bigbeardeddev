@@ -17,7 +17,7 @@
 				</span>
 			</a>
 			<p class="blurb">
-				Hand-built websites in Svelte and SvelteKit. {yearsExperience} years of client work out of
+				Custom websites in Svelte and SvelteKit. {yearsExperience} years of client work out of
 				{site.location}.
 			</p>
 		</div>
@@ -48,7 +48,7 @@
 	</div>
 
 	<div class="wrap base">
-		<p>&copy; {year} {site.owner}. Built by hand with SvelteKit.</p>
+		<p>&copy; {year} {site.owner}. Built with SvelteKit.</p>
 		<p class="mono">{site.location}</p>
 	</div>
 </footer>

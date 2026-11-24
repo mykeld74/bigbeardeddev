@@ -1,18 +1,24 @@
 import { defineEnvVars } from '@sveltejs/kit/env';
 
 /**
- * Credentials for the Gmail account that sends contact-form notifications.
- * Both are optional so the site builds and runs without them — the contact
- * form then reports that it is not configured instead of failing silently.
- * See .env.example.
+ * Email delivery for the contact form, via Resend.
+ *
+ * All three are optional so the site builds and runs without them — the form
+ * then validates as usual but tells the visitor to email directly instead of
+ * failing silently. See .env.example.
  */
 export const variables = defineEnvVars({
-	GOOGLE_EMAIL: {
-		description: 'Gmail address used as the sender for contact-form notifications.',
+	RESEND_API_KEY: {
+		description: 'Resend API key. Create one at resend.com/api-keys.',
 		schema: (value) => value
 	},
-	GOOGLE_EMAIL_PASSWORD: {
-		description: 'Google App Password for GOOGLE_EMAIL (not the account password).',
+	FROM_EMAIL: {
+		description:
+			'Sender address for contact-form notifications, e.g. "Big Bearded Dev <hello@bigbearded.dev>". Must be on a domain verified in Resend.',
+		schema: (value) => value
+	},
+	CONTACT_TO_EMAIL: {
+		description: 'Where contact-form submissions are delivered. Defaults to mike@bigbearded.dev.',
 		schema: (value) => value
 	}
 });

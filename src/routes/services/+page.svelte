@@ -7,7 +7,7 @@
 
 <Seo
 	title="Services"
-	description="Hand-built websites, editable content, rebuilds and rescues, forms and checkout — what Mike Daugherty does and how he works."
+	description="Custom websites, editable content, rebuilds and rescues, forms and checkout — what Mike Daugherty does and how he works."
 />
 
 <section class="section pageHead">

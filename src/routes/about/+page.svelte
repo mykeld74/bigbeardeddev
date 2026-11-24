@@ -45,10 +45,10 @@
 				keeping up with where the web is going — new CSS, new framework features, the whole thing.
 			</p>
 			<p>
-				What that adds up to in practice: I build sites by hand, I don't reach for a page builder,
-				and I care about the parts people don't see — how fast it loads, whether a screen reader can
-				make sense of it, whether it still works in three years. Several of the sites on my work
-				page I've maintained and rebuilt over the better part of a decade.
+				What that adds up to in practice: I build custom sites rather than reaching for a page
+				builder, and I care about the parts people don't see — how fast it loads, whether a screen
+				reader can make sense of it, whether it still works in three years. Several of the sites on
+				my work page I've maintained and rebuilt over the better part of a decade.
 			</p>
 
 			<h2>Personally</h2>

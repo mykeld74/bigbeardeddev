@@ -1,7 +1,7 @@
 # bigbearded.dev
 
 Personal site for **Mike Daugherty** — front-end web developer, Lakewood, Colorado.
-Built by hand with SvelteKit 3 and Svelte 5 (runes), deployed to Netlify.
+Built with SvelteKit 3 and Svelte 5 (runes), deployed to Netlify.
 
 ## Running it
 
@@ -42,18 +42,23 @@ Imports use the `#lib` alias (`#lib/data/site`), mapped in `package.json` and
 
 ## Contact form
 
-`/contact` posts to a server action that emails via nodemailer/Gmail. It needs
-two environment variables, declared in `src/env.ts`:
+`/contact` posts to a server action that sends through
+[Resend](https://resend.com). Variables are declared in `src/env.ts`:
 
 ```
-GOOGLE_EMAIL=
-GOOGLE_EMAIL_PASSWORD=
+RESEND_API_KEY=
+FROM_EMAIL=
+CONTACT_TO_EMAIL=
 ```
 
-`GOOGLE_EMAIL_PASSWORD` must be a Google **App Password**, not the account
-password. Copy `.env.example` to `.env` locally, and set both in the Netlify
-site settings for production. Without them the form validates as usual but tells
-the visitor to email directly instead of failing silently.
+`FROM_EMAIL` must be on a domain verified in Resend — an unverified sender is
+rejected. `CONTACT_TO_EMAIL` is optional and falls back to the address in
+`src/lib/data/site.ts`.
+
+Copy `.env.example` to `.env` locally, and set them in the Netlify site
+settings for production. Without `RESEND_API_KEY` or `FROM_EMAIL` the form
+still validates but tells the visitor to email directly rather than failing
+silently.
 
 The form also validates server-side, preserves submitted values on error, and
 carries a hidden honeypot field for spam.

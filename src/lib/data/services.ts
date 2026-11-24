@@ -8,7 +8,7 @@ export const services: Service[] = [
 	{
 		title: 'Websites built from scratch',
 		summary:
-			'A site designed and hand-coded for your business, not a theme with your logo dropped on it. Every page is written for what you actually need it to do.',
+			'A site designed and built around your business, not a theme with your logo dropped on it. Every page is there for a reason you can name.',
 		points: [
 			'Design and build, start to finish',
 			'Fast on a phone, on real-world connections',
@@ -71,7 +71,7 @@ export const processSteps: ProcessStep[] = [
 	{
 		n: '03',
 		title: 'I build it',
-		body: 'Hand-coded, tested on real devices, checked for speed and accessibility as I go. You get a live preview link and can watch it take shape.'
+		body: 'Tested on real devices, checked for speed and accessibility as I go. You get a live preview link and can watch it take shape.'
 	},
 	{
 		n: '04',

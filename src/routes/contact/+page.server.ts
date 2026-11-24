@@ -1,6 +1,7 @@
 import { fail } from '@sveltejs/kit';
-import { GOOGLE_EMAIL, GOOGLE_EMAIL_PASSWORD } from '$app/env/private';
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
+import { RESEND_API_KEY, FROM_EMAIL, CONTACT_TO_EMAIL } from '$app/env/private';
+import { site } from '#lib/data/site';
 import type { Actions } from './$types';
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -13,6 +14,13 @@ type Fields = {
 	budget: string;
 	message: string;
 };
+
+/** Created lazily so a missing key never throws at module load. */
+let client: Resend | null = null;
+function getResend(apiKey: string) {
+	if (!client) client = new Resend(apiKey);
+	return client;
+}
 
 /** FormData values can be `File`; only strings are accepted here. */
 function text(data: FormData, key: string) {
@@ -58,22 +66,13 @@ export const actions = {
 			return fail(400, { errors, values: fields });
 		}
 
-		const user = GOOGLE_EMAIL;
-		const pass = GOOGLE_EMAIL_PASSWORD;
-
-		if (!user || !pass) {
-			console.error('Contact form: GOOGLE_EMAIL / GOOGLE_EMAIL_PASSWORD are not configured.');
+		if (!RESEND_API_KEY || !FROM_EMAIL) {
+			console.error('Contact form: RESEND_API_KEY / FROM_EMAIL are not configured.');
 			return fail(500, {
 				values: fields,
-				formError:
-					'The contact form is not wired up yet on this environment. Please email mike@bigbearded.dev directly.'
+				formError: `The contact form is not wired up yet on this environment. Please email ${site.email} directly.`
 			});
 		}
-
-		const transporter = nodemailer.createTransport({
-			service: 'gmail',
-			auth: { user, pass }
-		});
 
 		const rows: [string, string][] = [
 			['Name', fields.name],
@@ -84,9 +83,9 @@ export const actions = {
 		];
 
 		try {
-			await transporter.sendMail({
-				from: user,
-				to: 'mike@bigbearded.dev',
+			const { error } = await getResend(RESEND_API_KEY).emails.send({
+				from: FROM_EMAIL,
+				to: CONTACT_TO_EMAIL || site.email,
 				replyTo: `${fields.name} <${fields.email}>`,
 				subject: `bigbearded.dev — new inquiry from ${fields.name}`,
 				text: [
@@ -110,13 +109,15 @@ export const actions = {
 				`
 			});
 
+			// Resend reports delivery problems in the payload, not by throwing.
+			if (error) throw new Error(error.message);
+
 			return { success: true };
 		} catch (error) {
-			console.error('Contact form: failed to send mail', error);
+			console.error('Contact form: Resend failed to send', error);
 			return fail(500, {
 				values: fields,
-				formError:
-					'Something went wrong sending that. Please try again, or email mike@bigbearded.dev directly.'
+				formError: `Something went wrong sending that. Please try again, or email ${site.email} directly.`
 			});
 		}
 	}

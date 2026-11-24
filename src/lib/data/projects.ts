@@ -7,10 +7,19 @@ export type Project = {
 	blurb: string;
 	stack: string[];
 	featured?: boolean;
+	/** Screenshot this URL instead of `url` (e.g. past a login redirect). */
+	captureUrl?: string;
+	/** Needs a signed-in session saved by `pnpm screenshots:login`. */
+	auth?: boolean;
+	/**
+	 * Image was supplied by hand rather than captured. A full `pnpm screenshots`
+	 * run leaves it alone; naming the project explicitly still recaptures it.
+	 */
+	manualShot?: boolean;
 };
 
 /**
- * Live client sites. Stacks reflect what each site is actually built with.
+ * Sites shown on the work page. Stacks reflect what each one is really built with.
  */
 export const projects: Project[] = [
 	{
@@ -20,7 +29,7 @@ export const projects: Project[] = [
 		image: 'westwoodsCommunityChurch',
 		sector: 'Church',
 		blurb:
-			'The largest site I maintain, and one I have rebuilt as the web has changed. Staff publish sermons, events and ministry pages themselves through a Sanity studio, with error monitoring and a database behind the custom pieces.',
+			'The largest site I maintain, and one I have rebuilt as the web has changed. Content runs through a Sanity studio, with a database behind the custom features and error monitoring watching the whole thing.',
 		stack: ['SvelteKit', 'Sanity', 'Drizzle', 'Sentry', 'GSAP'],
 		featured: true
 	},
@@ -36,14 +45,14 @@ export const projects: Project[] = [
 		featured: true
 	},
 	{
-		slug: 'kwd-woodworks',
-		name: 'KWD Woodworks',
-		url: 'https://kwdwoodworks.com/',
-		image: 'kwdWoodworks',
-		sector: 'Custom woodworking',
+		slug: 'the-russell-farm',
+		name: 'The Russell Farm',
+		url: 'https://therussellfarm.com',
+		image: 'theRussellFarm',
+		sector: 'Farm & agritourism',
 		blurb:
-			'A maker whose work sells itself once you see it, so the build gets out of the way of the photography. New pieces go up from a Sanity studio without touching code.',
-		stack: ['SvelteKit', 'Sanity', 'GSAP', 'Netlify'],
+			'A working farm that sells by the season — Christmas trees in winter, maple syrup in spring. Visitors book their own slots and manage reservations through accounts, with an admin side the farm runs through its busiest weeks.',
+		stack: ['SvelteKit', 'Drizzle', 'Neon', 'Better Auth', 'Resend'],
 		featured: true
 	},
 	{
@@ -53,7 +62,7 @@ export const projects: Project[] = [
 		image: 'madeForAReason',
 		sector: 'Book / e-commerce',
 		blurb:
-			'An author selling direct to readers. Stripe checkout wired straight into the site, so there is no handoff to a third-party storefront in the middle of a sale.',
+			"An author selling a personalized children's book direct to readers. The child's name and nickname run through all 32 pages, so the order has to capture that exactly, and Stripe checkout runs on the site rather than handing off to a storefront.",
 		stack: ['SvelteKit', 'Stripe', 'Cloudflare'],
 		featured: true
 	},
@@ -64,7 +73,7 @@ export const projects: Project[] = [
 		image: 'hinesburgCmaChurch',
 		sector: 'Church',
 		blurb:
-			'A small church that needed to look established and keep its own content current. Sanity-backed pages and sermons, with a build simple enough for a volunteer to run.',
+			'A Vermont church whose site does two jobs: welcome someone planning a first visit, and keep ministry pages and sermons current week to week. The team publishes its own content through a Sanity studio, with a dark mode across the whole site.',
 		stack: ['SvelteKit', 'Sanity', 'GSAP']
 	},
 	{
@@ -74,27 +83,29 @@ export const projects: Project[] = [
 		image: 'helpingHandsPhlebotomy',
 		sector: 'Mobile healthcare',
 		blurb:
-			'A mobile phlebotomy practice that books from the site. Masked, validated booking forms and transactional email that reaches the inbox rather than the spam folder.',
+			'A mobile phlebotomy practice that takes its bookings through the site. Forms that shape phone numbers and dates as you type, and confirmation email that reaches the inbox rather than the spam folder.',
 		stack: ['SvelteKit', 'Svelte Email', 'Vercel']
 	},
 	{
-		slug: 'innovation-roofing',
-		name: 'Innovation Roofing',
-		url: 'https://innovationroofingllc.com/',
-		image: 'innovationRoofing',
-		sector: 'Roofing contractor',
+		slug: 'workout-builder',
+		name: 'Workout Builder',
+		url: 'https://theworkoutbuilder.com',
+		image: 'workoutBuilder',
+		sector: 'Fitness app',
 		blurb:
-			'A roofing contractor competing against template sites. Built lean and fast, with the estimate request never more than a tap away.',
-		stack: ['SvelteKit', 'Netlify']
+			'A training app that builds plans around your age and the equipment you own, rather than assuming a full gym. Accounts, saved sessions and progress tracking, backed by Postgres.',
+		stack: ['SvelteKit', 'Drizzle', 'Neon', 'Better Auth'],
+		auth: true,
+		manualShot: true
 	},
 	{
 		slug: 'highland-417',
 		name: 'Highland 417',
 		url: 'https://highland417.com/',
 		image: 'highland417',
-		sector: 'Venue',
+		sector: 'Business IT & security',
 		blurb:
-			'An event venue that sells on atmosphere. Scroll-driven motion carries the photography without turning the page into a slideshow, served from the edge.',
+			'A B2B IT firm selling infrastructure, security and ongoing stewardship — explicitly not consumer tech support. The site has to make that distinction immediately and turn the right kind of visitor into a booked consultation.',
 		stack: ['SvelteKit', 'GSAP', 'Cloudflare']
 	},
 	{
@@ -102,9 +113,9 @@ export const projects: Project[] = [
 		name: 'Essential Strides',
 		url: 'https://essentialstrides.org/',
 		image: 'essentialStrides',
-		sector: 'Nonprofit',
+		sector: 'Medical nonprofit',
 		blurb:
-			'A nonprofit that needed to explain its work and collect sign-ups in the same breath. Clear story up front, forms that do not fight the people filling them in.',
+			'A medical mission nonprofit treating lower-extremity conditions, started by two doctors. The site has to make specialized medical work clear to donors and volunteers, then make getting involved easy.',
 		stack: ['SvelteKit', 'Netlify']
 	},
 	{
@@ -112,9 +123,9 @@ export const projects: Project[] = [
 		name: 'Brenda Bennett Art',
 		url: 'https://brendabennettart.com/',
 		image: 'brendaBennettArt',
-		sector: 'Artist portfolio',
+		sector: 'Artist gallery',
 		blurb:
-			'A working artist with a growing catalogue. A gallery-first layout where the paintings get the room, and nothing in the interface competes with them.',
+			'An artist who paints with paper, so the work only lands when you can see it up close. A gallery-first build covering originals, prints, commissions and workshops, with nothing in the interface competing with the art.',
 		stack: ['React', 'Gatsby']
 	},
 	{
@@ -122,9 +133,9 @@ export const projects: Project[] = [
 		name: 'Lakewood Christmas',
 		url: 'https://lakewoodchristmas.org',
 		image: 'lakewoodChristmas',
-		sector: 'Community event',
+		sector: 'Community Event',
 		blurb:
-			'A community Christmas event that spikes hard for a few weeks a year. Rebuilt annually, tuned for image weight so it holds up when the whole town arrives at once.',
+			'A Christmas Eve campaign site for Westwoods — three services, one invitation. It answers what a first-time visitor needs to know (when, where, how long, what happens) and gets rebuilt each year as the dates change.',
 		stack: ['SvelteKit', 'Enhanced Images', 'Netlify']
 	},
 	{
@@ -132,9 +143,9 @@ export const projects: Project[] = [
 		name: 'Easter In Lakewood',
 		url: 'https://easterinlakewood.com',
 		image: 'easterInLakewood',
-		sector: 'Community event',
+		sector: 'Community Event',
 		blurb:
-			'The spring counterpart: one weekend, one job, which is getting people the time and the place without making them hunt for it.',
+			'Westwoods again in spring — Easter Sunday, Good Friday and the egg hunt. The copy is aimed at people who do not go to church, so the site has to read as an invitation rather than an announcement.',
 		stack: ['SvelteKit', 'GSAP', 'Netlify']
 	}
 ];

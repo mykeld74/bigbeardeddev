@@ -14,11 +14,11 @@
 <section class="section pageHead">
 	<div class="wrap">
 		<p class="eyebrow">Selected work</p>
-		<h1>{projects.length} sites, all of them live</h1>
+		<h1>Twelve of them, all live</h1>
 		<p class="lead prose">
-			These aren't concepts or redesign exercises. Each one is a site a real business or
-			organization depends on, and most of them I still look after. Click through and look around —
-			that's the best way to judge the work.
+			A sample of what I have running right now — not concepts, not redesign exercises. Every one is
+			live and in use, and most of them I still look after. Click through and look around; that's
+			the best way to judge the work.
 		</p>
 	</div>
 </section>
@@ -71,6 +71,10 @@
 		gap: clamp(1.25rem, 0.5rem + 2vw, 2rem);
 		margin: 0;
 		padding: 0;
+	}
+
+	.workGrid > li {
+		display: flex;
 	}
 
 	@media (min-width: 46rem) {
