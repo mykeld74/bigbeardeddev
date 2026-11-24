@@ -281,22 +281,150 @@ a {
 	color: #fff;
 }
 
-/* Subtle entrance animation, opt-in per element */
-@media (prefers-reduced-motion: no-preference) {
-	.reveal {
-		animation: reveal 0.7s var(--ease) both;
-		animation-timeline: view();
-		animation-range: entry 0% entry 55%;
-	}
-}
+/* ==========================================================================
+   Scroll-driven animation
+   --------------------------------------------------------------------------
+   Native CSS scroll timelines: no JavaScript, no scroll listeners, and the
+   work happens off the main thread.
+
+   Everything is wrapped in @supports so browsers without scroll timelines
+   (Firefox today) render the page static and complete rather than running
+   these as ordinary load-time animations — which would fire every element
+   at once, including ones far below the fold.
+
+   prefers-reduced-motion is honoured by the global rule in reset.css, which
+   collapses all animation; the @media here keeps it explicit at the source.
+   ========================================================================== */
 
 @keyframes reveal {
 	from {
 		opacity: 0;
-		translate: 0 1.5rem;
+		/* Starts below its resting place so there is real travel to watch as it
+		   fades in. Per-grid override via --revealShift. */
+		translate: 0 var(--revealShift, 100px);
 	}
 	to {
 		opacity: 1;
 		translate: 0 0;
+	}
+}
+
+/* Drifts an element slowly against the scroll direction. */
+@keyframes driftUp {
+	to {
+		translate: 0 -2.5rem;
+	}
+}
+
+/* Pans an image through its frame as the card crosses the viewport. */
+@keyframes panThrough {
+	from {
+		translate: 0 -2.5%;
+	}
+	to {
+		translate: 0 2.5%;
+	}
+}
+
+@supports (animation-timeline: view()) {
+	@media (prefers-reduced-motion: no-preference) {
+		/* Fade and rise as the element travels up the viewport.
+		   The `cover` end value maps to where on screen it finishes: cover
+		   progress runs across (viewport height + element height), so with a
+		   900px viewport and a ~580px card, cover 42% lands the finish around
+		   a third of the way up. Higher = finishes further up; past ~65% it
+		   finishes after the card has left the top. */
+		.reveal {
+			animation-name: reveal;
+			/* `auto` maps the animation across the timeline range. A finite
+			   duration would finish it in that many milliseconds and snap
+			   straight to the end state. */
+			animation-duration: auto;
+			/* Linear, deliberately. The scroll position IS the playhead, so an
+			   ease-out front-loads the whole movement into the first moments
+			   and leaves a long invisible tail — it reads as finishing early
+			   however far the range is extended. */
+			animation-timing-function: linear;
+			animation-fill-mode: both;
+			animation-timeline: view();
+			animation-range: entry 10% cover 42%;
+		}
+
+		/* Cascade across a row: each column starts a little later.
+		   The nth-child pattern MUST match the grid's real column count. A 3n
+		   pattern on a 2-column grid staggers diagonally, which puts the
+		   second row in the order (late, early) — the last card animating
+		   before the one beside it. So the 3-column cascade is opt-in via
+		   .revealRow3 rather than applied to every .revealRow at a width. */
+		.revealRow > *:nth-child(2n) .reveal,
+		.revealRow > *:nth-child(2n).reveal {
+			animation-range: entry 16% cover 49%;
+		}
+
+		/* Only for grids that genuinely become 3 columns at this width. */
+		@media (min-width: 68rem) {
+			.revealRow3 > *:nth-child(3n + 1) .reveal,
+			.revealRow3 > *:nth-child(3n + 1).reveal {
+				animation-range: entry 5% cover 34%;
+			}
+
+			.revealRow3 > *:nth-child(3n + 2) .reveal,
+			.revealRow3 > *:nth-child(3n + 2).reveal {
+				animation-range: entry 26% cover 42%;
+			}
+
+			.revealRow3 > *:nth-child(3n + 3) .reveal,
+			.revealRow3 > *:nth-child(3n + 3).reveal {
+				animation-range: entry 47% cover 50%;
+			}
+		}
+
+		/* A grid sitting near the top of the page: its first row is already on
+		   screen at load, so render it settled and let the rows below animate.
+		   The count tracks the column count at each breakpoint. */
+		.revealFirstRowStatic > *:nth-child(-n + 1) .reveal,
+		.revealFirstRowStatic > *:nth-child(-n + 1).reveal {
+			animation: none;
+			opacity: 1;
+			translate: none;
+		}
+
+		@media (min-width: 46rem) {
+			.revealFirstRowStatic > *:nth-child(-n + 2) .reveal,
+			.revealFirstRowStatic > *:nth-child(-n + 2).reveal {
+				animation: none;
+				opacity: 1;
+				translate: none;
+			}
+		}
+
+		@media (min-width: 68rem) {
+			.revealFirstRowStatic > *:nth-child(-n + 3) .reveal,
+			.revealFirstRowStatic > *:nth-child(-n + 3).reveal {
+				animation: none;
+				opacity: 1;
+				translate: none;
+			}
+		}
+
+		/* Slow drift, tied to page scroll rather than the element's own entry. */
+		.drift {
+			animation-name: driftUp;
+			animation-duration: auto;
+			animation-timing-function: linear;
+			animation-fill-mode: both;
+			animation-timeline: scroll(root block);
+			animation-range: 0 70vh;
+		}
+
+		/* Image parallax inside a fixed frame. */
+		.panFrame img {
+			animation-name: panThrough;
+			animation-duration: auto;
+			animation-timing-function: linear;
+			animation-fill-mode: both;
+			animation-timeline: view();
+			animation-range: cover 0% cover 100%;
+		}
 	}
 }

@@ -45,7 +45,7 @@
 			</dl>
 		</div>
 
-		<div class="heroArt" aria-hidden="true">
+		<div class="heroArt drift" aria-hidden="true">
 			<img src={logoColor} alt="" width="404" height="710" fetchpriority="high" />
 		</div>
 	</div>
@@ -54,7 +54,7 @@
 <!-- ================= what I do ================= -->
 <section class="section" id="what">
 	<div class="wrap">
-		<header class="sectionHead">
+		<header class="sectionHead reveal">
 			<p class="eyebrow">What I do</p>
 			<h2>Four things, done properly</h2>
 			<p class="lead prose">
@@ -63,7 +63,7 @@
 			</p>
 		</header>
 
-		<ul class="serviceGrid" role="list">
+		<ul class="serviceGrid revealRow" role="list">
 			{#each services as service (service.title)}
 				<li class="card serviceCard reveal">
 					<h3>{service.title}</h3>
@@ -86,7 +86,7 @@
 <!-- ================= featured work ================= -->
 <section class="section altSection" id="work">
 	<div class="wrap">
-		<header class="sectionHead">
+		<header class="sectionHead reveal">
 			<p class="eyebrow">Selected work</p>
 			<h2>Sites currently in the wild</h2>
 			<p class="lead prose">
@@ -95,9 +95,9 @@
 			</p>
 		</header>
 
-		<ul class="workGrid" role="list">
+		<ul class="workGrid revealRow" role="list">
 			{#each featuredProjects as project, i (project.slug)}
-				<li><ProjectCard {project} priority={i === 0} /></li>
+				<li class="reveal"><ProjectCard {project} priority={i === 0} /></li>
 			{/each}
 		</ul>
 
@@ -110,7 +110,7 @@
 <!-- ================= stack ================= -->
 <section class="section" id="stack">
 	<div class="wrap stackLayout">
-		<div>
+		<div class="reveal">
 			<p class="eyebrow">The toolbox</p>
 			<h2>Old developer, current tools</h2>
 			<div class="prose">
@@ -129,7 +129,7 @@
 			</p>
 		</div>
 
-		<div class="skillCols">
+		<div class="skillCols reveal">
 			{#each skillGroups as group (group.label)}
 				<div class="skillGroup">
 					<h3>{group.label}</h3>
@@ -147,7 +147,7 @@
 <!-- ================= cta ================= -->
 <section class="section">
 	<div class="wrap">
-		<div class="card ctaCard">
+		<div class="card ctaCard reveal">
 			<div>
 				<h2>Need a site that works?</h2>
 				<p class="lead">

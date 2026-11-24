@@ -9,7 +9,7 @@
 
 <article class="card projectCard">
 	<a
-		class="shot"
+		class="shot panFrame"
 		href={project.url}
 		target="_blank"
 		rel="external noreferrer"
@@ -85,7 +85,8 @@
 
 	.shot img {
 		width: 100%;
-		height: 100%;
+		/* Slightly taller than the frame so the parallax never shows an edge. */
+		height: 106%;
 		object-fit: cover;
 		object-position: top center;
 		transition: scale 0.6s var(--ease);

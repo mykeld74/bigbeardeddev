@@ -25,9 +25,9 @@
 
 <section class="section workSection">
 	<div class="wrap">
-		<ul class="workGrid" role="list">
+		<ul class="workGrid revealRow revealRow3 revealFirstRowStatic" role="list">
 			{#each projects as project, i (project.slug)}
-				<li><ProjectCard {project} priority={i < 2} /></li>
+				<li class="reveal"><ProjectCard {project} priority={i < 2} /></li>
 			{/each}
 		</ul>
 	</div>
@@ -35,7 +35,7 @@
 
 <section class="section">
 	<div class="wrap">
-		<div class="card ctaCard">
+		<div class="card ctaCard reveal">
 			<div>
 				<h2>Want yours on this page?</h2>
 				<p class="lead">
@@ -67,6 +67,8 @@
 
 	.workGrid {
 		display: grid;
+		/* Longer reveal travel than the rest of the site. */
+		--revealShift: 250px;
 		grid-template-columns: 1fr;
 		gap: clamp(1.25rem, 0.5rem + 2vw, 2rem);
 		margin: 0;
