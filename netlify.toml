@@ -1,0 +1,11 @@
+# Build settings for @sveltejs/adapter-netlify.
+# The adapter writes serverless functions and headers into .netlify/v1
+# during the build, so nothing else needs configuring here.
+
+[build]
+  command = "pnpm build"
+  publish = "build"
+
+[build.environment]
+  # Vite 8 / SvelteKit 3 need a current Node. Netlify's default is older.
+  NODE_VERSION = "22"
