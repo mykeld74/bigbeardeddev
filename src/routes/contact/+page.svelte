@@ -11,6 +11,55 @@
 	const values = $derived(form && 'values' in form ? form.values : undefined);
 	const errors = $derived(form && 'errors' in form ? form.errors : undefined);
 
+	/* --- phone mask: (xxx) xxx-xxxx ------------------------------------- */
+
+	const digitsOnly = (value: string) => value.replace(/\D/g, '');
+
+	/** A pasted "+1 303 555 0199" carries a country code; drop it. */
+	function normalise(digits: string) {
+		return digits.length === 11 && digits.startsWith('1') ? digits.slice(1) : digits;
+	}
+
+	function formatPhone(raw: string) {
+		const d = normalise(digitsOnly(raw)).slice(0, 10);
+		if (d.length === 0) return '';
+		if (d.length <= 3) return `(${d}`;
+		if (d.length <= 6) return `(${d.slice(0, 3)}) ${d.slice(3)}`;
+		return `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`;
+	}
+
+	function maskPhone(event: Event) {
+		const input = event.currentTarget as HTMLInputElement;
+		const inputType = (event as InputEvent).inputType ?? '';
+		const caret = input.selectionStart ?? input.value.length;
+
+		// Track the caret by how many digits precede it — punctuation moves
+		// around during reformatting, digits do not.
+		let digitsBefore = digitsOnly(input.value.slice(0, caret)).length;
+		let digits = normalise(digitsOnly(input.value));
+
+		// Backspacing over ") " or "-" removes only punctuation, which the mask
+		// would immediately put back — the caret would appear stuck. If
+		// reformatting would make the value longer again, that is what just
+		// happened, so take the preceding digit instead.
+		if (inputType.startsWith('delete') && formatPhone(digits).length > input.value.length) {
+			digits = digits.slice(0, Math.max(0, digitsBefore - 1)) + digits.slice(digitsBefore);
+			digitsBefore = Math.max(0, digitsBefore - 1);
+		}
+
+		const formatted = formatPhone(digits);
+		input.value = formatted;
+
+		// Put the caret back after the same digit it was after before.
+		let pos = 0;
+		let seen = 0;
+		while (pos < formatted.length && seen < digitsBefore) {
+			if (/\d/.test(formatted[pos])) seen += 1;
+			pos += 1;
+		}
+		input.setSelectionRange(pos, pos);
+	}
+
 	const budgets = [
 		'Not sure yet',
 		'Under $2,000',
@@ -108,8 +157,12 @@
 								id="phone"
 								name="phone"
 								type="tel"
+								inputmode="tel"
 								autocomplete="tel"
-								value={values?.phone ?? ''}
+								maxlength="14"
+								placeholder="(303) 555-0199"
+								value={formatPhone(values?.phone ?? '')}
+								oninput={maskPhone}
 							/>
 						</div>
 					</div>
