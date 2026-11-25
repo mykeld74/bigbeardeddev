@@ -34,7 +34,7 @@
 			aria-label="{site.name} — home"
 			onclick={() => (menuOpen = false)}
 		>
-			<Logo size={38} title="" />
+			<Logo size={38} title="" variant="color" />
 			<span class="brandText">
 				<strong>Big Bearded Dev</strong>
 				<small>{site.owner}</small>
@@ -150,7 +150,6 @@
 		font-family: var(--fontDisplay);
 		font-size: 1.05rem;
 		font-weight: 600;
-		letter-spacing: -0.01em;
 	}
 
 	.brandText small {

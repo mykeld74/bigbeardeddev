@@ -10,7 +10,7 @@
 	<div class="wrap inner">
 		<div class="brandCol">
 			<a class="brand" href={resolve('/')} aria-label="{site.name} — home">
-				<Logo size={56} title="" />
+				<Logo size={56} title="" variant="color" />
 				<span>
 					<strong>Big Bearded Dev</strong>
 					<small>{site.owner}</small>

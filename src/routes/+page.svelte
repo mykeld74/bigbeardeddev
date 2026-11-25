@@ -115,12 +115,12 @@
 			<h2>Old developer, current tools</h2>
 			<div class="prose">
 				<p>
-					I've been at this since 2012, which makes me seasoned — that's code for old. The tech I
-					use isn't. Svelte 5 with runes is my daily driver, on a foundation of plain HTML, CSS and
-					JavaScript that I actually understand rather than just configure.
+					Svelte 5 with runes is my daily driver, on a foundation of plain HTML, CSS and JavaScript
+					I understand rather than just configure. I've been writing for the web since 2012 — long
+					enough to have watched a few “this changes everything” frameworks arrive and leave again.
 				</p>
 				<p>
-					I pick boring, durable choices where it matters and the sharp new thing where it earns its
+					So I pick boring and durable where it matters, and the sharp new thing where it earns its
 					place. That's why sites I built years ago still run.
 				</p>
 			</div>
@@ -178,7 +178,6 @@
 	h1 {
 		font-size: var(--stepHero);
 		font-weight: 700;
-		letter-spacing: -0.035em;
 		margin-bottom: 1.5rem;
 	}
 
@@ -235,6 +234,44 @@
 		justify-self: center;
 		max-width: 20rem;
 		filter: drop-shadow(0 24px 48px rgb(0 0 0 / 0.55));
+	}
+
+	/* Below the two-column breakpoint the full figure is 560px tall — most of
+	   a phone screen, sitting between the stats and the next section. Take it
+	   out of flow instead: oversized, faded, bleeding off the right edge
+	   behind the copy. Costs no vertical space and the eyes still track.
+
+	   Positioned with inset rather than translate on purpose: `.drift` on this
+	   same element animates `translate`, so using it here would fight. */
+	@media (max-width: 55.9375rem) {
+		/* Clip rather than hidden: it contains the bleed without turning the
+		   section into a scroll container. */
+		.hero {
+			overflow-x: clip;
+		}
+
+		.heroGrid {
+			position: relative;
+		}
+
+		.heroCopy {
+			position: relative;
+			z-index: 1;
+		}
+
+		.heroArt {
+			position: absolute;
+			bottom: 0;
+			right: calc(var(--gutter) * -1.5);
+			z-index: 0;
+			width: min(72vw, 20rem);
+			max-width: none;
+			opacity: 0.16;
+			filter: none;
+			pointer-events: none;
+			/* Fade the leading edge so it never crowds the text it sits behind. */
+			mask-image: linear-gradient(to left, rgb(0 0 0) 35%, transparent 95%);
+		}
 	}
 
 	@media (min-width: 56rem) {
@@ -357,6 +394,12 @@
 	.stackLayout {
 		display: grid;
 		gap: clamp(2.5rem, 1rem + 4vw, 4rem);
+	}
+
+	/* The global reset zeroes heading margins, so this one needs its own
+	   breathing room — the other sections set it via .lead or their own rule. */
+	.stackLayout h2 {
+		margin-bottom: 1.1rem;
 	}
 
 	.skillCols {
